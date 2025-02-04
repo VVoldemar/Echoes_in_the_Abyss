@@ -1,3 +1,5 @@
+# TODO split this to modules
+
 import pygame
 import sys
 import os
