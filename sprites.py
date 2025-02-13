@@ -43,14 +43,10 @@ class Player(pygame.sprite.Sprite):
         """
         super().__init__(groups)  # Добавляем спрайт в указанные группы
         self.direction = ''  # Начальное направление движения игрока
-        self.pos = {  # Позиция игрока в пикселях
-            'x': TILE_SIZE * pos_x,
-            'y': TILE_SIZE * pos_y,
-        }
         self.moving = False # Флаг, указывающий, находится ли игрок в движении
         self.image = player_image  # Устанавливаем изображение игрока
-        self.rect = self.image.get_rect().move(self.pos['x'], self.pos['y'])  # Получаем прямоугольник изображения и устанавливаем его в начальную позицию
-
+        self.rect = self.image.get_rect().move(TILE_SIZE * pos_x, TILE_SIZE * pos_y)  # Получаем прямоугольник изображения и устанавливаем его в начальную позицию
+        self.speed = 10
     def move(self, level, direction=None):
         """
         Перемещает игрока в указанном направлении.
@@ -63,25 +59,24 @@ class Player(pygame.sprite.Sprite):
         if direction is not None:  # Если задано новое направление, меняем текущее направление
             self.direction = direction
         self.moving = True  # Устанавливаем флаг движения в True
-        # TODO make special constant for step
         if self.direction == 'left':
-            if level[(self.pos['x'] - 1) // TILE_SIZE][self.pos['y'] // TILE_SIZE] == '#':  # Проверка на столкновение со стеной слева
+            if level[self.rect.y // TILE_SIZE][(self.rect.x - 1) // TILE_SIZE] == '#':  # Проверка на столкновение со стеной слева
                 self.moving = False  # Если стена, останавливаем движение
                 return
-            self.pos['x'] -= 5  # Сдвигаем позицию игрока влево на 5 пикселей
+            self.rect.x -= self.speed  # Сдвигаем позицию игрока влево на self.speed пикселей
         elif self.direction == 'right':
-            if level[(self.pos['x']) // TILE_SIZE + 1][self.pos['y'] // TILE_SIZE] == '#':  # Проверка на столкновение со стеной справа
+            if level[self.rect.y // TILE_SIZE][(self.rect.x) // TILE_SIZE + 1] == '#':  # Проверка на столкновение со стеной справа
                 self.moving = False  # Если стена, останавливаем движение
                 return
-            self.pos['x'] += 5  # Сдвигаем позицию игрока вправо на 5 пикселей
+            self.rect.x += self.speed  # Сдвигаем позицию игрока вправо на self.speed пикселей
         elif self.direction == 'up':
-            if level[self.pos['x'] // TILE_SIZE][(self.pos['y'] - 1) // TILE_SIZE] == '#':  # Проверка на столкновение со стеной сверху
+            if level[(self.rect.y - 1) // TILE_SIZE][self.rect.x // TILE_SIZE] == '#':  # Проверка на столкновение со стеной сверху
                 self.moving = False  # Если стена, останавливаем движение
                 return
-            self.pos['y'] -= 5  # Сдвигаем позицию игрока вверх на 5 пикселей
+            self.rect.y -= self.speed  # Сдвигаем позицию игрока вверх на self.speed пикселей
         elif self.direction == 'down':
-            if level[self.pos['x'] // TILE_SIZE][self.pos['y'] // TILE_SIZE + 1] == '#':  # Проверка на столкновение со стеной снизу
+            if level[self.rect.y // TILE_SIZE + 1][self.rect.x // TILE_SIZE] == '#':  # Проверка на столкновение со стеной снизу
                 self.moving = False  # Если стена, останавливаем движение
                 return
-            self.pos['y'] += 5  # Сдвигаем позицию игрока вниз на 5 пикселей
-        self.rect = self.image.get_rect().move(self.pos['x'], self.pos['y'])  # Обновляем позицию прямоугольника спрайта
+            self.rect.y += self.speed  # Сдвигаем позицию игрока вниз на self.speed пикселей
+        self.rect = self.image.get_rect().move(self.rect.x, self.rect.y)  # Обновляем позицию прямоугольника спрайта

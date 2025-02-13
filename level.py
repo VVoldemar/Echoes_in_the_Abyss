@@ -20,7 +20,7 @@ def generate_level(level_filename, all_sprites, tiles_group, player_group):
     new_player, x, y = None, None, None # Инициализируем переменные для игрока и координат
     for y in range(len(level)): # Перебираем строки карты уровня
         for x in range(len(level[y])): # Перебираем символы в строке
-            if level[y][x] == '.': # Если символ '.' - пустая клетка
+            if level[y][x] == '0': # Если символ '.' - пустая клетка
                 Tile('empty', x, y, [tiles_group, all_sprites]) # Создаем тайл пустой клетки
             elif level[y][x] == '#': # Если символ '#' - стена
                 Tile('wall', x, y, [tiles_group, all_sprites]) # Создаем тайл стены

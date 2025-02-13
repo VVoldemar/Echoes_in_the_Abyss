@@ -18,6 +18,21 @@ clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group() # Группа для всех спрайтов в игре
 tiles_group = pygame.sprite.Group() # Группа для спрайтов тайлов
 player_group = pygame.sprite.Group() # Группа для спрайтов игрока
+# Класс камеры
+class Camera:
+    def __init__(self, width, height):
+        self.camera = pygame.Rect(0, 0, width, height)
+        self.width = width
+        self.height = height
+
+    def apply(self, entity):
+        return entity.rect.move(self.camera.topleft)
+
+    def update(self, target):
+        x = -target.rect.x + int(self.width / 2)
+        y = -target.rect.y + int(self.height / 2)
+
+        self.camera = pygame.Rect(x, y, self.width, self.height)
 
 def terminate():
     """
@@ -36,11 +51,17 @@ def start_game(player, level):
     """
     bg = pygame.transform.scale(load_image('bg.png'), (WIDTH, HEIGHT)) # Загрузка и масштабирование фонового изображения
     screen.blit(bg, (0, 0)) # Отображение фона на экране
-
+    camera = Camera(WIDTH, HEIGHT)
     running = True # Флаг для управления игровым циклом
     while running: # Основной игровой цикл
+        camera.update(player)
+        screen.blit(bg, (0,0)) # Перерисовываем фон, чтобы скрыть следы от предыдущего положения игрока (можно оптимизировать)
+        for sprite in all_sprites:
+            screen.blit(sprite.image, camera.apply(sprite))
+        screen.blit(player.image, camera.apply(player))
+        
         for event in pygame.event.get(): # Обработка событий
-            if event.type == pygame.QUIT: # Если событие - закрытие окна
+            if event.type == pygame.QUIT: # Если событие - закрытиaaaaaaaе окна
                 running = False # Завершаем игровой цикл
             elif event.type == pygame.KEYDOWN and not player.moving: # Если нажата клавиша и игрок не двигается
                 if event.key == pygame.K_UP or event.key == pygame.K_w: # Клавиши движения вверх
@@ -51,13 +72,11 @@ def start_game(player, level):
                     player.move(level, 'down') # Перемещаем игрока вниз
                 elif event.key == pygame.K_LEFT or event.key == pygame.K_a: # Клавиши движения влево
                     player.move(level, 'left') # Перемещаем игрока влево
-                screen.blit(bg, (0,0)) # Перерисовываем фон, чтобы скрыть следы от предыдущего положения игрока (можно оптимизировать)
 
         if player.moving: # Если игрок в движении
             player.move(level) # Продолжаем движение в текущем направлении
+        camera.update(player)
 
-        tiles_group.draw(screen) # Отображение тайлов на экране
-        player_group.draw(screen) # Отображение игрока на экране
 
         pygame.display.flip() # Обновление экрана
         clock.tick(FPS) # Контроль частоты кадров
