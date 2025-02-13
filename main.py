@@ -1,6 +1,6 @@
 import pygame
 import sys
-from config import WIDTH, HEIGHT, FPS, LEVEL_FILE # Импортируем константы из config.py
+from config import TILE_SIZE, WIDTH, HEIGHT, FPS, LEVEL_FILE # Импортируем константы из config.py
 from utils import load_image # Импортируем функцию загрузки изображений
 from level import generate_level # Импортируем функцию генерации уровня
 
@@ -55,13 +55,13 @@ def start_game(player, level):
     running = True # Флаг для управления игровым циклом
     while running: # Основной игровой цикл
         camera.update(player)
-        screen.blit(bg, (0,0)) # Перерисовываем фон, чтобы скрыть следы от предыдущего положения игрока (можно оптимизировать)
+        screen.blit(bg, (0, 0)) # Перерисовываем фон, чтобы скрыть следы от предыдущего положения игрока (можно оптимизировать)
         for sprite in all_sprites:
             screen.blit(sprite.image, camera.apply(sprite))
         screen.blit(player.image, camera.apply(player))
         
         for event in pygame.event.get(): # Обработка событий
-            if event.type == pygame.QUIT: # Если событие - закрытиaaaaaaaе окна
+            if event.type == pygame.QUIT: # Если событие - закрытие окна
                 running = False # Завершаем игровой цикл
             elif event.type == pygame.KEYDOWN and not player.moving: # Если нажата клавиша и игрок не двигается
                 if event.key == pygame.K_UP or event.key == pygame.K_w: # Клавиши движения вверх
@@ -72,11 +72,33 @@ def start_game(player, level):
                     player.move(level, 'down') # Перемещаем игрока вниз
                 elif event.key == pygame.K_LEFT or event.key == pygame.K_a: # Клавиши движения влево
                     player.move(level, 'left') # Перемещаем игрока влево
-
+        curr_tile = level[player.rect.y // TILE_SIZE][player.rect.x // TILE_SIZE]
+        # TODO put this logic in tile class
+        if player.rect.x // TILE_SIZE == player.rect.x / TILE_SIZE and player.rect.y // TILE_SIZE == player.rect.y / TILE_SIZE:
+            if curr_tile == 'l':
+                if player.direction == 'down':
+                    player.move(level, 'left')
+                elif player.direction == 'up':
+                    player.move(level, 'right')
+                elif player.direction == 'left':
+                    player.move(level, 'down')
+                elif player.direction == 'right':
+                    player.move(level, 'up')
+            elif curr_tile == 'r' :
+                if player.direction == 'down':
+                    player.move(level, 'right')
+                elif player.direction == 'up':
+                    player.move(level, 'left')
+                elif player.direction == 'left' :
+                    player.move(level, 'up')
+                elif player.direction == 'right':
+                    player.move(level, 'down')
+        if curr_tile == 'f':
+            #end_game()
+            pass
         if player.moving: # Если игрок в движении
             player.move(level) # Продолжаем движение в текущем направлении
         camera.update(player)
-
 
         pygame.display.flip() # Обновление экрана
         clock.tick(FPS) # Контроль частоты кадров

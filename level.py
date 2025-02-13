@@ -24,6 +24,10 @@ def generate_level(level_filename, all_sprites, tiles_group, player_group):
                 Tile('empty', x, y, [tiles_group, all_sprites]) # Создаем тайл пустой клетки
             elif level[y][x] == '#': # Если символ '#' - стена
                 Tile('wall', x, y, [tiles_group, all_sprites]) # Создаем тайл стены
+            elif level[y][x] == 'l' or level[y][x] == 'r': # Если символ 'r' или 'l' - трамплин
+                Tile('trampoline', x, y, [tiles_group, all_sprites], direction=level[y][x]) # Создаем тайл трамплина
+            elif level[y][x] == 'f': # Если символ 'f' - финишь
+                Tile('finish', x, y, [tiles_group, all_sprites]) # Создаем тайл трамплина
             elif level[y][x] == '@': # Если символ '@' - начальная позиция игрока
                 Tile('empty', x, y, [tiles_group, all_sprites]) # Создаем тайл пустой клетки под игроком
                 new_player = Player(x, y, [player_group, all_sprites]) # Создаем игрока в указанной позиции

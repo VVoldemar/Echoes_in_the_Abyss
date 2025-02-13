@@ -1,11 +1,9 @@
 # TODO split this to modules
-
+from config import WIDTH, HEIGHT, FPS # Импортируем константы из config.py
+from utils import load_level # Импортируем функцию загрузки уровня
 import pygame
 import sys
 import os
-FPS = 50
-WIDTH = 800
-HEIGHT = 800
 clock = pygame.time.Clock()
 #функция загрузки изображений
 def load_image(name, colorkey=None):
@@ -88,22 +86,25 @@ def create_level():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if player.rect.collidepoint(x, y):
-                    print(11)
                     current_tile = 'player'
+                    pygame.mouse.set_cursor(*pygame.cursors.diamond)
                 elif tile.rect.collidepoint(x, y):
                     current_tile = 'tile'
+                    pygame.mouse.set_cursor(*pygame.cursors.diamond)
                 elif current_tile != None:
                     if current_tile == 'player':
                         player.rect = player.image.get_rect().move(x // tile_size * tile_size, y // tile_size * tile_size)
-                        current_tile = None
                     elif current_tile == 'tile':
                         Tile('wall', x // tile_size, y // tile_size)
-                        current_tile = None
-            screen.blit(bg, player)
+                    current_tile = None
+                    pygame.mouse.set_cursor(*pygame.cursors.arrow)
+
+            screen.blit(bg, (0, 0))
         tiles_group.draw(screen)
         player_group.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
+
 if __name__ == '__main__':
     pygame.init()
 

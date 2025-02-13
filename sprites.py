@@ -8,13 +8,15 @@ from utils import load_image # Импортируем функцию загру�
 tile_images = {
     'wall': load_image('wall.png'), # Изображение стены
     'empty': load_image('empty.png'), # Изображение пустой клетки
+    'trampoline': load_image('trampoline.png'), # Изображение трамплина
+    'finish': load_image('finish.png'), # Изображение трамплина
 }
 player_image = load_image('player.png') # Изображение игрока
 
 
 # Класс Tile (тайл/клетка поля)
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, tile_type, pos_x, pos_y, groups):
+    def __init__(self, tile_type, pos_x, pos_y, groups, direction=None):
         """
         Конструктор класса Tile.
 
