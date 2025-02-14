@@ -28,6 +28,8 @@ class Tile(pygame.sprite.Sprite):
         """
         super().__init__(groups)  # Добавляем спрайт в указанные группы
         self.image = tile_images[tile_type]  # Устанавливаем изображение тайла в зависимости от его типа
+        if direction == 'r':
+            self.image = pygame.transform.rotate(self.image, 90)
         self.rect = self.image.get_rect().move(  # Получаем прямоугольник изображения и смещаем его на нужную позицию
             TILE_SIZE * pos_x, TILE_SIZE * pos_y)
 
@@ -58,8 +60,15 @@ class Player(pygame.sprite.Sprite):
             direction (str, optional): Направление движения ('up', 'down', 'left', 'right'). Defaults to None.
                                         Если direction не указан, продолжает движение в текущем направлении.
         """
+        m = {
+            'left': 180,
+            'right': 0,
+            'down': 270,
+            'up': 90
+        }
         if direction is not None:  # Если задано новое направление, меняем текущее направление
             self.direction = direction
+        
         self.moving = True  # Устанавливаем флаг движения в True
         if self.direction == 'left':
             if level[self.rect.y // TILE_SIZE][(self.rect.x - 1) // TILE_SIZE] == '#':  # Проверка на столкновение со стеной слева
@@ -81,4 +90,6 @@ class Player(pygame.sprite.Sprite):
                 self.moving = False  # Если стена, останавливаем движение
                 return
             self.rect.y += self.speed  # Сдвигаем позицию игрока вниз на self.speed пикселей
+        self.image = player_image
+        self.image = pygame.transform.rotate(self.image, m[self.direction])
         self.rect = self.image.get_rect().move(self.rect.x, self.rect.y)  # Обновляем позицию прямоугольника спрайта
