@@ -50,7 +50,6 @@ def start_game(player, level):
         level (list): Двумерный список, представляющий карту уровня.
     """
     bg = pygame.transform.scale(load_image('bg.png'), (WIDTH, HEIGHT)) # Загрузка и масштабирование фонового изображения
-    screen.blit(bg, (0, 0)) # Отображение фона на экране
     camera = Camera(WIDTH, HEIGHT)
     running = True # Флаг для управления игровым циклом
     while running: # Основной игровой цикл
