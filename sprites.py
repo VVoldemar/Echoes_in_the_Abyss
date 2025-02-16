@@ -27,6 +27,7 @@ class Tile(pygame.sprite.Sprite):
             groups (list): Список групп спрайтов, к которым нужно добавить тайл.
         """
         super().__init__(groups)  # Добавляем спрайт в указанные группы
+        self.tile_type = tile_type
         self.image = tile_images[tile_type]  # Устанавливаем изображение тайла в зависимости от его типа
         if direction == 'r':
             self.image = pygame.transform.rotate(self.image, 90)
@@ -47,6 +48,7 @@ class Player(pygame.sprite.Sprite):
         """
         super().__init__(groups)  # Добавляем спрайт в указанные группы
         self.direction = ''  # Начальное направление движения игрока
+        self.tile_type = 'player'
         self.moving = False # Флаг, указывающий, находится ли игрок в движении
         self.image = player_image  # Устанавливаем изображение игрока
         self.rect = self.image.get_rect().move(TILE_SIZE * pos_x, TILE_SIZE * pos_y)  # Получаем прямоугольник изображения и устанавливаем его в начальную позицию

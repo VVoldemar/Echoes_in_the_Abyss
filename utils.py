@@ -40,5 +40,13 @@ def load_level(filename):
 
     max_width = max(map(len, level_map))  # Находим максимальную ширину строки в уровне
 
-    # Выравниваем все строки уровня до максимальной ширины, заполняя '.' в конце более коротких строк
-    return list(map(lambda x: x.ljust(max_width, '.'), level_map))
+    # Выравниваем все строки уровня до максимальной ширины, заполняя 'e' в конце более коротких строк
+    return list(map(lambda x: x.ljust(max_width, 'e'), level_map))
+
+
+tile_to_sybmol = {
+    'player': 'p',
+    'wall': '#',
+    'empty': 'e',
+    'finish': 'f'
+}
