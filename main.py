@@ -49,6 +49,9 @@ def start_game(player, level):
         player (Player): Объект игрока.
         level (list): Двумерный список, представляющий карту уровня.
     """
+    pygame.mixer.music.load('music/abyss.mp3')
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play()
     bg = pygame.transform.scale(load_image('bg.png'), (WIDTH, HEIGHT)) # Загрузка и масштабирование фонового изображения
     camera = Camera(WIDTH, HEIGHT)
     running = True # Флаг для управления игровым циклом
