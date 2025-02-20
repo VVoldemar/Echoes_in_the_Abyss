@@ -1,15 +1,17 @@
 """Файл для хранения классов спрайтов: Tile (тайл/клетка поля) и Player (игрок)"""
 
 import pygame
-from config import TILE_SIZE  # Импортируем константу размера тайла
+from config import COIN_IMG, EMPTY_IMG, FINISH_IMG, SPIKES_IMG, TILE_SIZE, TRAMPOLINE_IMG, WALL_IMG  # Импортируем константу размера тайла
 from utils import load_image # Импортируем функцию загрузки изображений
 
 # Загрузка изображений тайлов и игрока (эти изображения используются в классах Tile и Player)
 tile_images = {
-    'wall': load_image('wall.png'), # Изображение стены
-    'empty': load_image('empty.png'), # Изображение пустой клетки
-    'trampoline': load_image('trampoline.png'), # Изображение трамплина
-    'finish': load_image('finish.png'), # Изображение трамплина
+    'wall': load_image(WALL_IMG), # Изображение стены
+    'empty': load_image(EMPTY_IMG), # Изображение пустой клетки
+    'trampoline': load_image(TRAMPOLINE_IMG), # Изображение трамплина
+    'finish': load_image(FINISH_IMG), # Изображение трамплина
+    'spikes': load_image(SPIKES_IMG), # Изображение трамплина
+    'coin': load_image(COIN_IMG), # Изображение трамплина
 }
 player_image = load_image('player.png') # Изображение игрока
 
@@ -53,6 +55,7 @@ class Player(pygame.sprite.Sprite):
         self.image = player_image  # Устанавливаем изображение игрока
         self.rect = self.image.get_rect().move(TILE_SIZE * pos_x, TILE_SIZE * pos_y)  # Получаем прямоугольник изображения и устанавливаем его в начальную позицию
         self.speed = 10
+        self.nextmove = None
     def move(self, level, direction=None):
         """
         Перемещает игрока в указанном направлении.
@@ -68,9 +71,10 @@ class Player(pygame.sprite.Sprite):
             'down': 270,
             'up': 90
         }
-        if direction is not None:  # Если задано новое направление, меняем текущее направление
+        if direction is not None and not self.moving:  # Если задано новое направление, меняем текущее направление
             self.direction = direction
-        
+        if self.moving and direction is not None:
+            self.nextmove = direction
         self.moving = True  # Устанавливаем флаг движения в True
         if self.direction == 'left':
             if level[self.rect.y // TILE_SIZE][(self.rect.x - 1) // TILE_SIZE] == '#':  # Проверка на столкновение со стеной слева

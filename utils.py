@@ -4,6 +4,12 @@ import pygame
 import sys
 import os
 
+def terminate():
+    """
+    Закрывает окно.
+    """
+    pygame.quit()
+    sys.exit()
 
 def load_image(name, colorkey=None):
     """
@@ -41,12 +47,13 @@ def load_level(filename):
     max_width = max(map(len, level_map))  # Находим максимальную ширину строки в уровне
 
     # Выравниваем все строки уровня до максимальной ширины, заполняя 'e' в конце более коротких строк
-    return list(map(lambda x: x.ljust(max_width, 'e'), level_map))
+    return list(map(lambda x: list(x.ljust(max_width, 'e')), level_map))
 
 
 tile_to_sybmol = {
     'player': 'p',
     'wall': '#',
     'empty': 'e',
-    'finish': 'f'
+    'finish': 'f',
+    'spikes': 's'
 }

@@ -28,7 +28,9 @@ def create_level():
     tile = Tile('wall', 3, 10, [tiles_group, all_sprites])
     trampoline = Tile('trampoline', 4, 10, [tiles_group, all_sprites])
     finish = Tile('finish', 5, 10, [tiles_group, all_sprites])
-    tiles_menu = [player, tile, trampoline, finish]
+    spikes = Tile('spikes', 6, 10, [tiles_group, all_sprites])
+    coin = Tile('coin', 6, 10, [tiles_group, all_sprites])
+    tiles_menu = [player, tile, trampoline, finish, spikes]
     current_tile = None
     while True:
         for event in pygame.event.get():
