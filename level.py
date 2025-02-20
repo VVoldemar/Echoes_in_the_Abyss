@@ -26,10 +26,10 @@ def generate_level(level_filename, all_sprites, tiles_group, player_group):
                 level_sprites[y][x] = Tile('empty', x, y, [tiles_group, all_sprites]) # Создаем тайл пустой клетки
             elif level[y][x] == '#': # Если символ '#' - стена
                 level_sprites[y][x] = Tile('wall', x, y, [tiles_group, all_sprites]) # Создаем тайл стены
-            elif level[y][x] == 'l' or level[y][x] == 'r': # Если символ 'r' или 'l' - трамплин
+            elif level[y][x] in 'lr': # Если символ 'r' или 'l' - трамплин
                 level_sprites[y][x] = Tile('trampoline', x, y, [tiles_group, all_sprites], direction=level[y][x]) # Создаем тайл трамплина
-            elif level[y][x] == 's': # Если символ 's' - финишь
-                level_sprites[y][x] = Tile('spikes', x, y, [tiles_group, all_sprites]) # Создаем тайл шипов
+            elif level[y][x] in 'yghj': # Если символ 's' - финишь
+                level_sprites[y][x] = Tile('spikes', x, y, [tiles_group, all_sprites], direction=level[y][x]) # Создаем тайл шипов
             elif level[y][x] == 'f': # Если символ 'f' - финишь
                 level_sprites[y][x] = Tile('finish', x, y, [tiles_group, all_sprites]) # Создаем тайл финиша
             elif level[y][x] == 'c': # Если символ 'f' - финишь
@@ -38,4 +38,4 @@ def generate_level(level_filename, all_sprites, tiles_group, player_group):
             elif level[y][x] == 'p': # Если символ '@' - начальная позиция игрока
                 level_sprites[y][x] = Tile('empty', x, y, [tiles_group, all_sprites]) # Создаем тайл пустой клетки под игроком
                 new_player = Player(x, y, [player_group, all_sprites]) # Создаем игрока в указанной позиции
-    return new_player, level, level_sprites, total_coins,  # Возвращаем объект игрока и карту уровня
+    return new_player, level, level_sprites,  total_coins,  # Возвращаем объект игрока и карту уровня

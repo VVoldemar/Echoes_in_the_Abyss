@@ -1,5 +1,5 @@
 import pygame
-from config import TILE_SIZE, WIDTH, HEIGHT, FPS, LEVEL_FILE # Импортируем константы из config.py
+from config import BG_IMG, TILE_SIZE, WIDTH, HEIGHT, FPS # Импортируем константы из config.py
 from sprites import Tile
 from utils import load_image, terminate # Импортируем функцию загрузки изображений
 from level import generate_level # Импортируем функцию генерации уровня
@@ -50,7 +50,7 @@ def start_game(level_filename, game_over):
     pygame.mixer.music.load('music/abyss.mp3')
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play()
-    bg = pygame.transform.scale(load_image('bg.png'), (2*len(level) * TILE_SIZE, 2*len(level[0])  * TILE_SIZE)) # Загрузка и масштабирование фонового изображения
+    bg = pygame.transform.scale(load_image(BG_IMG), (2*len(level) * TILE_SIZE, 2*len(level[0])  * TILE_SIZE)) # Загрузка и масштабирование фонового изображения
     camera = Camera(WIDTH, HEIGHT)
     running = True # Флаг для управления игровым циклом
     collected_coins = 0
@@ -77,13 +77,13 @@ def start_game(level_filename, game_over):
         y = player.rect.y // TILE_SIZE
         curr_tile = level[y][x]
         # TODO put this logic in tile class
+        if curr_tile == 'c':
+            level[y][x] = 'e'
+            level_sprites[y][x].kill()
+            level_sprites[y][x] = Tile('empty', x, y, [tiles_group, all_sprites])
+            collected_coins += 1
         if x == player.rect.x / TILE_SIZE and y == player.rect.y / TILE_SIZE:
-            if curr_tile == 'c':
-                level[y][x] = 'e'
-                level_sprites[y][x].kill()
-                level_sprites[y][x] = Tile('empty', x, y, [tiles_group, all_sprites])
-                collected_coins += 1
-            if curr_tile == 's':
+            if curr_tile in 'yghj':
                 pygame.mixer.music.stop()
                 clear_screen()
                 game_over(False)

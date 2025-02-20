@@ -1,6 +1,7 @@
 import pygame, sys
 from button import Button
 from config import BG_IMG, WIDTH, HEIGHT
+from editor import create_level
 from main import start_game
 from utils import load_image, terminate
 
@@ -49,32 +50,6 @@ def level_select():
 
         pygame.display.update()
 
-def options():
-    while True:
-        mouse_pos = pygame.mouse.get_pos()
-
-        screen.fill("white")
-
-        OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(WIDTH//2, 260))
-        screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
-
-        OPTIONS_BACK = Button(pos=(WIDTH//2, 460), 
-                            text_input="BACK", font=get_font(75), base_color="#06A77D", hovering_color="White")
-
-        OPTIONS_BACK.changeColor(mouse_pos)
-        OPTIONS_BACK.update(screen)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                terminate()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    level_select()
-                if OPTIONS_BACK.checkForInput(mouse_pos):
-                    main_menu()
-
-        pygame.display.update()
 
 def game_over(win, collected_coins=0, total_coins=0):
     while True:
@@ -105,33 +80,33 @@ def main_menu():
     while True:
         screen.blit(bg, (0, 0))
 
-        MENU_MOUSE_POS = pygame.mouse.get_pos()
+        mouse_pos = pygame.mouse.get_pos()
 
-        MENU_TEXT = get_font(100).render("MAIN MENU", True, "#b68f40")
-        MENU_RECT = MENU_TEXT.get_rect(center=(WIDTH//2, 100))
+        menu_text = get_font(100).render("MAIN MENU", True, "#b68f40")
+        menu_rect = menu_text.get_rect(center=(WIDTH//2, 100))
 
-        PLAY_BUTTON = Button(pos=(WIDTH//2, 250), 
+        play_button = Button(pos=(WIDTH//2, 250), 
                             text_input="PLAY", font=get_font(75), base_color="#06A77D", hovering_color="White")
-        OPTIONS_BUTTON = Button(pos=(WIDTH//2, 400), 
-                            text_input="OPTIONS", font=get_font(75), base_color="#06A77D", hovering_color="White")
-        QUIT_BUTTON = Button(pos=(WIDTH//2, 550), 
+        editor_button = Button(pos=(WIDTH//2, 400), 
+                            text_input="EDITOR", font=get_font(75), base_color="#06A77D", hovering_color="White")
+        quit_button = Button(pos=(WIDTH//2, 550), 
                             text_input="QUIT", font=get_font(75), base_color="#06A77D", hovering_color="White")
 
-        screen.blit(MENU_TEXT, MENU_RECT)
+        screen.blit(menu_text, menu_rect)
 
-        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
-            button.changeColor(MENU_MOUSE_POS)
+        for button in [play_button, editor_button, quit_button]:
+            button.changeColor(mouse_pos)
             button.update(screen)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                if play_button.checkForInput(mouse_pos):
                     level_select()
-                if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    options()
-                if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                if editor_button.checkForInput(mouse_pos):
+                    create_level()
+                if quit_button.checkForInput(mouse_pos):
                     pygame.quit()
                     sys.exit()
 

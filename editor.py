@@ -1,13 +1,12 @@
 # TODO split this to modules
-from config import WIDTH, HEIGHT, TILE_SIZE, FPS # Импортируем константы из config.py
+from config import BG_IMG, WIDTH, HEIGHT, TILE_SIZE, FPS # Импортируем константы из config.py
 from utils import load_level, load_image, tile_to_sybmol # Импортируем функцию загрузки уровня
 from sprites import Tile, Player # Импортируем классы Tile и Player
 
 import pygame
 import sys
-import os
 clock = pygame.time.Clock()
-#функция загрузки изображений
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
 all_sprites = pygame.sprite.Group()
@@ -21,7 +20,7 @@ def terminate():
     
 #начало игры
 def create_level():
-    bg = pygame.transform.scale(load_image('bg.png'), (WIDTH, HEIGHT))
+    bg = pygame.transform.scale(load_image(BG_IMG), (WIDTH, HEIGHT))
     screen.blit(bg, (0, 0))
     level_matrix = [['e' for _ in range(30)] for _ in range(30)]
     player = Player(2, 10, [player_group, all_sprites])
@@ -30,7 +29,7 @@ def create_level():
     finish = Tile('finish', 5, 10, [tiles_group, all_sprites])
     spikes = Tile('spikes', 6, 10, [tiles_group, all_sprites])
     coin = Tile('coin', 6, 10, [tiles_group, all_sprites])
-    tiles_menu = [player, tile, trampoline, finish, spikes]
+    tiles_menu = [player, tile, trampoline, finish, spikes, coin]
     current_tile = None
     while True:
         for event in pygame.event.get():
