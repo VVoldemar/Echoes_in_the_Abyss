@@ -99,7 +99,7 @@ def create_level():
                     cy += 5
                 elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     cx -= 5
-        
+
         menu_sprites.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
@@ -118,7 +118,8 @@ def save_level(level_matrix):
     with open('./levels/lvllist.txt', 'w') as file:
         for line in file:
             levels.append(line.strip())
-        filename = f'levels/lvl{len(levels) + 1}.txt'  # Формируем путь к файлу уровня
+        # Формируем путь к файлу уровня
+        filename = f'levels/lvl{len(levels) + 1}.txt'
         with open(filename, 'w') as mapFile:
             for line in level_matrix:
                 mapFile.write(''.join(map(str, line)) + '\n')

@@ -15,9 +15,6 @@ pygame.display.set_caption("Echoes in the Abyss")
 bg = pygame.transform.scale(load_image(BG_IMG), (WIDTH, HEIGHT))
 
 
-
-
-
 def level_select():
     levels = []
     with open('./levels/lvllist.txt', 'r') as file:
