@@ -24,7 +24,7 @@ def create_level():
     pygame.key.set_repeat(500, 30)
     bg = pygame.transform.scale(load_image(BG_IMG), (WIDTH, HEIGHT))
     screen.blit(bg, (0, 0))
-    level_matrix = [['e' for _ in range(30)] for _ in range(30)]
+    level_matrix = [['e' for _ in range(90)] for _ in range(90)]
     player = Player(0, 1, [menu_sprites])
     tile = Tile('wall', 1, 1, [menu_sprites])
     trampoline1 = Tile('trampoline', 2, 1, [menu_sprites], direction='l')
@@ -91,13 +91,13 @@ def create_level():
                         current_tile = None
                         pygame.mouse.set_cursor(*pygame.cursors.arrow)
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                if event.key == pygame.K_UP or event.key == pygame.K_w and cy > 0 and cy < 80 * TILE_SIZE:
                     cy -= 5
-                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d and cx >= 0 and cx < 80 * TILE_SIZE:
                     cx += 5
-                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                elif event.key == pygame.K_DOWN or event.key == pygame.K_s and cy >= 0 and cy < 80 * TILE_SIZE:
                     cy += 5
-                elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                elif event.key == pygame.K_LEFT or event.key == pygame.K_a and cx > 0 and cx < 80 * TILE_SIZE:
                     cx -= 5
 
         menu_sprites.draw(screen)
@@ -115,15 +115,15 @@ def save_level(level_matrix):
 
     """
     levels = []
-    with open('./levels/lvllist.txt', 'w') as file:
+    with open('./levels/lvllist.txt', 'r') as file:
         for line in file:
             levels.append(line.strip())
-        # Формируем путь к файлу уровня
-        filename = f'levels/lvl{len(levels) + 1}.txt'
+    with open('./levels/lvllist.txt', 'a') as file:
+        filename = f'lvl{len(levels) + 1}.txt'
         with open(filename, 'w') as mapFile:
             for line in level_matrix:
                 mapFile.write(''.join(map(str, line)) + '\n')
-        file.write(filename)
+        file.write('\n' + filename)
 
 
 if __name__ == '__main__':

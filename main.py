@@ -69,6 +69,11 @@ def start_game(level_filename, game_over):
                     player.move(level, 'left')  # Перемещаем игрока влево
         x = player.rect.x // TILE_SIZE
         y = player.rect.y // TILE_SIZE
+        if y < 0 or y >= len(level) - 1 or x < 0 or x >= len(level[0]) - 1:
+            pygame.mixer.music.stop()
+            clear_screen()
+            game_over(False)
+            break
         curr_tile = level[y][x]
         # TODO put this logic in tile class
         if curr_tile == 'c':
