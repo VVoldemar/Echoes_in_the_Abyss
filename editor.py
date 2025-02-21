@@ -88,8 +88,6 @@ def create_level():
                                 current_tile_direction = None
                             Tile(current_tile, x // TILE_SIZE, y //
                                  TILE_SIZE, [tiles_group, all_sprites], direction=current_tile_direction)
-                        current_tile = None
-                        pygame.mouse.set_cursor(*pygame.cursors.arrow)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP or event.key == pygame.K_w and cy > 0 and cy < 80 * TILE_SIZE:
                     cy -= 5
