@@ -4,12 +4,14 @@ import pygame
 import sys
 import os
 
+
 def terminate():
     """
     Закрывает окно.
     """
     pygame.quit()
     sys.exit()
+
 
 def load_image(name, colorkey=None):
     """
@@ -22,15 +24,18 @@ def load_image(name, colorkey=None):
     Returns:
         pygame.Surface: Загруженное изображение.
     """
-    fullname = os.path.join('img', name) # Формируем полный путь к файлу изображения
-    if not os.path.isfile(fullname): # Проверяем, существует ли файл
+    fullname = os.path.join(
+        'img', name)  # Формируем полный путь к файлу изображения
+    if not os.path.isfile(fullname):  # Проверяем, существует ли файл
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
     image = pygame.image.load(fullname)
     return image
 
+
 def get_font(size):
     return pygame.font.Font("fonts/font.ttf", size)
+
 
 def load_level(filename):
     """
@@ -44,12 +49,15 @@ def load_level(filename):
     """
     filename = "levels/" + filename  # Формируем путь к файлу уровня
     with open(filename, 'r') as mapFile:
-        level_map = [line.strip() for line in mapFile]  # Читаем строки из файла, удаляя пробельные символы в начале и конце
+        # Читаем строки из файла, удаляя пробельные символы в начале и конце
+        level_map = [line.strip() for line in mapFile]
 
-    max_width = max(map(len, level_map))  # Находим максимальную ширину строки в уровне
+    # Находим максимальную ширину строки в уровне
+    max_width = max(map(len, level_map))
 
     # Выравниваем все строки уровня до максимальной ширины, заполняя 'e' в конце более коротких строк
     return list(map(lambda x: list(x.ljust(max_width, 'e')), level_map))
+
 
 class Camera:
     def __init__(self, width, height):
@@ -65,12 +73,14 @@ class Camera:
         y = -target.rect.y + int(self.height / 2)
 
         self.camera = pygame.Rect(x, y, self.width, self.height)
-    
+
     def move(self, dx, dy):
         x = -dx
         y = -dy
 
         self.camera = pygame.Rect(x, y, self.width, self.height)
+
+
 tile_to_symbol = {
     'player': 'p',
     'wall': '#',
