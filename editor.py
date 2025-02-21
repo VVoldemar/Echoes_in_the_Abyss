@@ -120,7 +120,7 @@ def save_level(level_matrix):
             levels.append(line.strip())
     with open('./levels/lvllist.txt', 'a') as file:
         filename = f'lvl{len(levels) + 1}.txt'
-        with open(filename, 'w') as mapFile:
+        with open('./levels/' + filename, 'w') as mapFile:
             for line in level_matrix:
                 mapFile.write(''.join(map(str, line)) + '\n')
         file.write('\n' + filename)
