@@ -111,7 +111,7 @@ def main_menu():
                 if play_button.checkForInput(mouse_pos):
                     level_select()
                 if editor_button.checkForInput(mouse_pos):
-                    create_level()
+                    create_level(main_menu)
                 if quit_button.checkForInput(mouse_pos):
                     pygame.quit()
                     sys.exit()
