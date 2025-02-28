@@ -4,6 +4,8 @@ import pygame
 import sys
 import os
 
+from config import IMG_FOLDER, TILE_SIZE
+
 
 def terminate():
     """
@@ -25,12 +27,12 @@ def load_image(name, colorkey=None):
         pygame.Surface: Загруженное изображение.
     """
     fullname = os.path.join(
-        'img', name)  # Формируем полный путь к файлу изображения
+        IMG_FOLDER, name)  # Формируем полный путь к файлу изображения
     if not os.path.isfile(fullname):  # Проверяем, существует ли файл
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
     image = pygame.image.load(fullname)
-    return image
+    return pygame.transform.scale(image, (TILE_SIZE, TILE_SIZE))
 
 
 def get_font(size):
